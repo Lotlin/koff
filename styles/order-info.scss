@@ -1,23 +1,110 @@
 .order-info {
+  padding-top: 32px;
+  padding-bottom: 104px;
+
+  @media (min-width: 580px) {
+    padding-top: 60px;
+    padding-bottom: 100px;
+  }
+
+  @media (min-width: 820px) {
+    padding-top: 120px;
+    padding-bottom: 160px;
+  }
 
   &__container {
+    @media (min-width: 580px) {
+      max-width: 466px;
+    }
+
+    @media(min-width: 820px) {
+      max-width: 494px;
+    }
+
+    @media(min-width: 1120px) {
+      max-width: 592px;
+    }
+  }
+
+  &__title-wrapper {
+    margin-bottom: 24px;
+    display: grid;
+    grid-template-areas: 
+    "title"
+    "price"
+    "number";
+    row-gap: 8px;
+
+    @media (min-width: 580px) {
+      grid-template-areas: 
+      "title price"
+      "number number";
+      grid-template-columns: 251px 80px;
+      gap: 12px 77px;
+    }
   }
 
   &__title {
+    grid-area: title;
+    font-size: 16px;
+    font-weight: 400;
+
+    @media (min-width: 580px) {
+      font-size: 20px;
+    }
   }
 
-  &__cost {
+  &__price {
+    grid-area: price;
+    font-size: 16px;
+
+    @media (min-width: 580px) {
+      font-size: 20px;
+    }
   }
 
   &__number {
+    grid-area: number;
+    width: 63px;
+    background-color: #eeeff2;
+    text-align: center;
+    border-radius: 32px;
   }
 
   &__detailes-title {
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 400;
   }
 
   &__detailes-table {
+    margin-bottom: 24px;
   }
 
   &__return {
+    display: block;
+    width: 288px;
+    padding: 12px 24px;
+    margin: 0 auto;
+    border-radius: 32px;
+    background-color: #780096;
+    color: #ffffff;
+    text-align: center;
+    outline: 1px solid transparent;
+
+    &:hover {
+    background-color: #9200B7;
+    }
+
+    &:active,
+    &:focus {
+      border: 1px solid #cc00ff;
+      color: #780096;
+      background-color: #ffffff;
+    }
+
+    @media (min-width: 580px) {
+      width: 408px;
+    }
   }
 }
