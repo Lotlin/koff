@@ -168,6 +168,10 @@
       grid-column: 1/-1;
     }
 
+    &--form-order {
+      grid-column: 1/-1;
+    }
+
     @media (min-width: 480px) {
       font-size: 20px;
     }
