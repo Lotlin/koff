@@ -13,21 +13,29 @@
   }
 
   &__container {
+    padding: 24px 0;
+    border: 1px solid #eeeff2;
+    border-radius: 16px;
+
     @media (min-width: 580px) {
-      max-width: 466px;
+      padding: 60px 122px;
+      max-width: 710px;
     }
 
     @media(min-width: 820px) {
-      max-width: 494px;
+      padding: 60px 116px;
+      max-width: 726px;
     }
 
     @media(min-width: 1120px) {
-      max-width: 592px;
+      padding: 60px 120px;
+      max-width: 832px;
     }
   }
 
   &__title-wrapper {
-    margin-bottom: 24px;
+    width: 288px;
+    margin: 0 auto 24px;
     display: grid;
     grid-template-areas: 
     "title"
@@ -36,6 +44,7 @@
     row-gap: 8px;
 
     @media (min-width: 580px) {
+      width: 408px;
       grid-template-areas: 
       "title price"
       "number number";
@@ -72,13 +81,22 @@
   }
 
   &__detailes-title {
-    margin-bottom: 12px;
-    font-size: 16px;
+    width: 288px;
+    margin: 0 auto 12px;
     font-weight: 400;
+
+    @media (min-width: 580px) {
+      width: 408px;
+    }
   }
 
   &__detailes-table {
-    margin-bottom: 24px;
+    width: 288px;
+    margin: 0 auto 24px ;
+
+    @media (min-width: 580px) {
+      width: 408px;
+    }
   }
 
   &__return {
