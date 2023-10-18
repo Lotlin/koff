@@ -5,6 +5,7 @@ import Navigo from 'navigo';
 import {Header} from './modules/Header/Header';
 import {Main} from './modules/Main/Main';
 import {Footer} from './modules/Footer/Footer';
+import {OrderInfo} from './modules/Main/OrderInfo';
 
 const producrSlider = () => {
   Promise.all([
@@ -63,7 +64,7 @@ const init = () => {
         console.log('cart');
       })
       .on('/order', () => {
-        console.log('orde');
+        new OrderInfo().mount();
       })
       .notFound(() => {
         document.body.innerHTML = `<h2>Страница не найдена</h2>`;
