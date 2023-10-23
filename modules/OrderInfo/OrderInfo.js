@@ -107,7 +107,7 @@ export class OrderInfo {
   }
 
 
-  mount() {
+  mount(parent) {
     if (this.isMounted) {
       return;
     }
@@ -119,8 +119,7 @@ export class OrderInfo {
 
     this.containerElement.append(titleWrapper, deliveryTitle, table, homeLink);
 
-    const mainSection = getMainSection();
-    mainSection.append(this.element);
+    parent.append(this.element);
 
     this.isMounted = true;
   }

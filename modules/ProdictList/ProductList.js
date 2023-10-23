@@ -1,11 +1,11 @@
 /* eslint-disable require-jsdoc */
 import {addContainer} from '../addContainer';
 import {productListClassList} from '../data/productList';
-// todo убрать item (нужен для теста)
 import {
-  cardClassList, cardLinkHref, item, cardBtnTextContent, favoriteBtnSvg,
+  cardClassList, cardBtnTextContent, favoriteBtnSvg,
 } from '../data/card';
 import {currency} from '../data/data';
+import {API_URL} from '../../const';
 
 export class ProductList {
   static instance = null;
@@ -19,7 +19,7 @@ export class ProductList {
       ProductList.instance = this;
 
       this.element = document.createElement('section');
-      this.element.className = `${productListClassList.section}`;
+      this.element.className = productListClassList.section;
       this.containerElement =
         addContainer(this.element, productListClassList.container);
       this.isMounted = false;
@@ -29,44 +29,44 @@ export class ProductList {
     return ProductList.instance;
   }
 
-  // todo передавать item аргументом
-
-  getHTMLTemplateListItem() {
+  getHTMLTemplateListItem({id, images: [image], name, price}) {
     const article = document.createElement('article');
     article.className = `${productListClassList.item} ${cardClassList.card}`;
 
     const linkImg = document.createElement('a');
-    linkImg.className = `${cardClassList.link}`;
-    linkImg.href = `${cardLinkHref}`;
+    linkImg.className = cardClassList.link;
+    linkImg.href = `/product/${id}`;
     const img = new Image();
-    img.className = `${cardClassList.img}`;
-    img.src = item.src;
-    img.alt = item.alt;
+    img.className = cardClassList.img;
+    img.src = `${API_URL}${image}`;
+    img.alt = name;
     linkImg.append(img);
 
     const info = document.createElement('div');
-    info.classList = `${cardClassList.info}`;
+    info.classList = cardClassList.info;
     const title = document.createElement('h3');
-    title.className = `${cardClassList.title}`;
+    title.className = cardClassList.title;
     const linkInfo = document.createElement('a');
-    linkInfo.className = `${cardClassList.link}`;
-    linkInfo.href = `${cardLinkHref}`;
-    linkInfo.textContent = item.text;
+    linkInfo.className = cardClassList.link;
+    linkInfo.href = `/product/${id}`;
+    linkInfo.textContent = name;
     title.append(linkInfo);
-    const price = document.createElement('p');
-    price.classList = `${cardClassList.price}`;
-    price.textContent = `${item.price} ${currency}`;
-    info.append(title, price);
+    const priceElem = document.createElement('p');
+    priceElem.classList = cardClassList.price;
+    priceElem.textContent = `${price.toLocaleString()}\u00A0${currency}`;
+    info.append(title, priceElem);
 
     const cartButton = document.createElement('button');
-    cartButton.className = `${cardClassList.cartBtn}`;
+    cartButton.className = cardClassList.cartBtn;
     cartButton.type = 'button';
     cartButton.textContent = cardBtnTextContent;
+    cartButton.dataset.id = `${id}`;
 
     const favoriteButton = document.createElement('button');
-    favoriteButton.className = `${cardClassList.favoriteBtn}`;
+    favoriteButton.className = cardClassList.favoriteBtn;
     favoriteButton.type = 'button';
-    favoriteButton.insertAdjacentHTML('beforeend', `${favoriteBtnSvg}`);
+    favoriteButton.insertAdjacentHTML('beforeend', favoriteBtnSvg);
+    favoriteButton.dataset.id = `${id}`;
 
     article.append(linkImg, info, cartButton, favoriteButton);
 
@@ -75,13 +75,11 @@ export class ProductList {
 
   updateListElem(data = []) {
     const listElem = document.createElement('ul');
-    listElem.className = `${productListClassList.ul}`;
+    listElem.className = productListClassList.ul;
 
     const listItems = data.map((item) => {
       const listItemELem = document.createElement('li');
-      // listItemELem.innerHTML = this.getHTMLTemplateListItem(item);
-      // todo передать item параметром
-      listItemELem.append(this.getHTMLTemplateListItem());
+      listItemELem.append(this.getHTMLTemplateListItem(item));
       return listItemELem;
     });
 
@@ -95,7 +93,7 @@ export class ProductList {
     const titleElem = document.createElement('h2');
     titleElem.textContent = title ? title : 'Список товаров';
     titleElem.className = title ?
-      `${productListClassList.title}` :
+      productListClassList.title :
       `${productListClassList.title} visually-hidden`;
 
     this.containerElement.append(titleElem);

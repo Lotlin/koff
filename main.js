@@ -5,8 +5,10 @@ import Navigo from 'navigo';
 import {Header} from './modules/Header/Header';
 import {Main} from './modules/Main/Main';
 import {Footer} from './modules/Footer/Footer';
-import {OrderInfo} from './modules/Main/OrderInfo';
+import {OrderInfo} from './modules/OrderInfo/OrderInfo';
 import {ProductList} from './modules/ProdictList/ProductList';
+import {ApiService} from './sevices/ApiService';
+import { Catalog } from './modules/Catalog/Catalog';
 
 const producrSlider = () => {
   Promise.all([
@@ -36,21 +38,29 @@ const producrSlider = () => {
 };
 
 const init = () => {
+  const api = new ApiService();
+  const router = new Navigo('/', {linksSelector: 'a[href^="/"]'});
+
   new Header().mount();
   new Main().mount();
   new Footer().mount();
 
+  api.getProductCategories().then(data => {
+    new Catalog().mount(new Main().element, data);
+    router.updatePageLinks();
+  });
+
   producrSlider();
 
-  const router = new Navigo('/', {linksSelector: 'a[href^="/"]'});
-
   router
-      .on('/', () => {
-        new ProductList().mount(new Main().element, [1]);
+      .on('/', async () => {
+        const product = await api.getProducts();
+        new ProductList().mount(new Main().element, product);
+        router.updatePageLinks();
       },
       {
         leave(done) {
-          console.log('leave');
+          new ProductList().unmount();
           done();
         },
         already() {
@@ -58,23 +68,26 @@ const init = () => {
         },
       },
       )
-      .on('/category', () => {
-        // eslint-disable-next-line max-len
-        new ProductList().mount(new Main().element, [1, 2, 3, 4, 5, 6], 'Категория');
+      .on('/category', async ({params: {slug}}) => {
+        const product = await api.getProducts();
+        new ProductList().mount(new Main().element, product, `${slug}`);
+        router.updatePageLinks();
       },
       {
         leave(done) {
-          console.log('leave');
+          new ProductList().unmount();
           done();
         },
       },
       )
-      .on('/favorite', () => {
-        new ProductList().mount(new Main().element, [1, 2, 3], 'Избранное');
+      .on('/favorite', async () => {
+        const product = await api.getProducts();
+        new ProductList().mount(new Main().element, product, 'Избранное');
+        router.updatePageLinks();
       },
       {
         leave(done) {
-          console.log('leave');
+          new ProductList().unmount();
           done();
         },
       },
@@ -89,8 +102,15 @@ const init = () => {
         console.log('cart');
       })
       .on('/order', () => {
-        new OrderInfo().mount();
-      })
+        new OrderInfo().mount(new Main().element);
+      },
+      {
+        leave(done) {
+          new OrderInfo().unmount();
+          done();
+        },
+      },
+      )
       .notFound(() => {
         new Main().element.innerHTML = `
           <h2>Страница не найдена</h2>
