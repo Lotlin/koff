@@ -8,7 +8,8 @@ import {Footer} from './modules/Footer/Footer';
 import {OrderInfo} from './modules/OrderInfo/OrderInfo';
 import {ProductList} from './modules/ProdictList/ProductList';
 import {ApiService} from './sevices/ApiService';
-import { Catalog } from './modules/Catalog/Catalog';
+import {Catalog} from './modules/Catalog/Catalog';
+import {NotFound} from './modules/NotFound/NotFound';
 
 const producrSlider = () => {
   Promise.all([
@@ -112,12 +113,7 @@ const init = () => {
       },
       )
       .notFound(() => {
-        new Main().element.innerHTML = `
-          <h2>Страница не найдена</h2>
-          <p>Через 5 секунд вы будете перенаправлены
-            <a href="/">на главную страницу</a>
-          </p>`;
-
+        new NotFound().mount(new Main().element);
         setTimeout(() => {
           router.navigate('/');
         }, 5000);

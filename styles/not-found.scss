@@ -1,0 +1,23 @@
+.not-found {
+  min-height: 100vh;
+  background: url(../public/img/404.jpg) no-repeat center;
+  background-size: contain;
+
+
+  &__title {
+    margin-bottom: 10px;
+  }
+
+  &__text {
+    font-size: 14px;
+  }
+
+  &__link {
+    color: #780096;
+
+    &:hover,
+    &:active {
+      text-decoration: underline;
+    }
+  }
+}

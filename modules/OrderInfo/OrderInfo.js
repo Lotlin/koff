@@ -7,7 +7,6 @@ import {
 import {
   tableClassList, tableTextContent,
 } from '../data/tableData';
-import {getMainSection} from '../getElements';
 import {renderTableRow} from '../renderTableRow';
 import {currency} from '../data/data';
 
