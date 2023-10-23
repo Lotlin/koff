@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 import {addContainer} from '../addContainer';
 import {
-  orderInfoClassList, titleTextContent, currency, deliveryTitleTextContent,
+  orderInfoClassList, titleTextContent, deliveryTitleTextContent,
   homeLinkHref, homeLinkTextContent,
 } from '../data/orderInfoData';
 import {
@@ -9,6 +9,7 @@ import {
 } from '../data/tableData';
 import {getMainSection} from '../getElements';
 import {renderTableRow} from '../renderTableRow';
+import {currency} from '../data/data';
 
 export class OrderInfo {
   static instance = null;

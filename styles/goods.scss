@@ -27,7 +27,8 @@
     margin-bottom: 32px;
     display: grid;
     gap: 50px 8px;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    justify-content: space-evenly;
+    grid-template-columns: repeat(auto-fit, 140px);
 
     &:last-child {
       margin-bottom: 0;
@@ -36,12 +37,12 @@
     @media(min-width: 580px) {
       margin-bottom: 40px;
       gap: 65px 10px;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fit, 230px);
     }
   
     @media(min-width: 820px) {
       gap: 81px 16px;
-      grid-template-columns: repeat(auto-fit, minmax(302px, 1fr));
+      grid-template-columns: repeat(auto-fit, 302px);
     }
   }
 }

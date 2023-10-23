@@ -14,7 +14,5 @@ export const titleTextContent = 'Заказ успешно размещен';
 
 export const deliveryTitleTextContent = 'Данные доставки';
 
-export const currency = '₽';
-
 export const homeLinkHref = '/';
 export const homeLinkTextContent = 'На главную';
