@@ -1,17 +1,11 @@
 export const footerClassList = {
   footer: 'footer',
   container: 'footer__container',
-  logo: 'footer__logo',
-  logoLink: 'footer__link-logo',
   contacts: 'footer__contacts',
   developerList: 'footer__developer-list',
   developerItem: 'footer__developer-item',
   developerItemLink: 'footer__developer-link',
   copyright: 'footer__copyright',
-};
-
-export const footerLinks = {
-  logoLinkHref: '/',
 };
 
 export const designerSocialLink = `https://t.me/Mrshmallowww`;

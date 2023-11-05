@@ -101,10 +101,18 @@
     flex-direction: row-reverse;
     align-items: center;
     column-gap: 4px;
+    
+    svg {
+      fill: #ffffff;
+    }
 
     &:hover,
     &:active {
       color: #780096; 
+
+      svg {
+        fill: #780096;
+      }
     }
 
     &:focus-visible {

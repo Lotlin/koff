@@ -1,11 +1,12 @@
 /* eslint-disable require-jsdoc */
 import {addContainer} from '../addContainer';
-import logoImg from '/img/logo.svg';
 import {
   headerClassList, headerLinks, searchSVG, linkFavoriteTextContent,
-  favoriteSVG, linkCartTextContent, goodsAmountTextContent, cartSVG,
+  linkCartTextContent, goodsAmountTextContent, cartSVG,
 } from '../data/headerData';
-import {logoAlt} from '../data/companyData';
+import {Logo} from '../../features/Logo/Logo';
+import {likeSvg} from '../../features/likeSVG/likeSvg';
+
 
 export class Header {
   static instance = null;
@@ -22,21 +23,6 @@ export class Header {
     }
 
     return Header.instance;
-  }
-
-  getLogo() {
-    const logo = document.createElement('a');
-    logo.className = `${headerClassList.logoLink}`;
-    logo.href = `${headerLinks.logoLinkHref}`;
-
-    const imgLogo = new Image();
-    imgLogo.className = `${headerClassList.logo}`;
-    imgLogo.src = logoImg;
-    imgLogo.alt = `${logoAlt}`;
-
-    logo.append(imgLogo);
-
-    return logo;
   }
 
   getSearchForm() {
@@ -74,7 +60,10 @@ export class Header {
     spanLinkFavorite.textContent = `${linkFavoriteTextContent}`;
 
     linkFavorite.append(spanLinkFavorite);
-    linkFavorite.insertAdjacentHTML('beforeend', `${favoriteSVG}`);
+
+    likeSvg().then((svg) => {
+      linkFavorite.append(svg);
+    });
 
     const linkCart = document.createElement('a');
     linkCart.className = `${headerClassList.link}`;
@@ -107,7 +96,7 @@ export class Header {
       return;
     }
 
-    const logo = this.getLogo();
+    const logo = new Logo('header').create();
     const searchForm = this.getSearchForm();
     const navigation = this.getNavigation();
 

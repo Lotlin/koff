@@ -18,7 +18,7 @@
 
   &__img {
     width: 100%;
-    object-fit: contain;
+    object-fit: cover;
     border-radius: 16px;
     aspect-ratio: 7/6;
 
@@ -77,10 +77,16 @@
     color: #780096;
     outline: 1px solid transparent;
 
-    &:hover,
-    &:active {
-      background-color: #780096; 
+    &:hover {
+      background-color: #9200B7; 
+      border-color: #9200B7;
       color: #ffffff;
+    }
+
+    &:active {
+      background-color: transparent;
+      border-color:#cc00ff;
+      color: #cc00ff;
     }
 
     &:focus-visible {
@@ -93,5 +99,27 @@
     position: absolute;
     top: 12px;
     right: 12px;
+
+    svg {
+      fill: #ffffff;
+    }
+
+
+    &:hover,
+    &--active {
+      color: #780096; 
+
+      svg {
+        fill: #780096;
+      }
+    }
+
+    &:active {
+      border-color:#cc00ff;
+
+      svg {
+        fill: #cc00ff;
+      }
+    }
   }
 }

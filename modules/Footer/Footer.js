@@ -1,8 +1,8 @@
 /* eslint-disable require-jsdoc */
 import {addContainer} from '../addContainer';
-import logoImg from '/img/logo.svg';
+import {Logo} from '../../features/Logo/Logo';
 import {
-  footerClassList, footerLinks,
+  footerClassList,
   designerSocialLink, disignerName, disignerTextContent, developerTextContent,
   developerSocialLink, developerName, supportYear,
 } from '../data/footerData';
@@ -11,7 +11,7 @@ import {
   contactsYouTubeSVG, contactsTelegramSVG,
 } from '../data/contactsData';
 import {
-  companyName, companyContactsLinks, comnpanyPhoneNumber, logoAlt,
+  companyName, companyContactsLinks, comnpanyPhoneNumber,
 } from '../data/companyData';
 
 export class Footer {
@@ -29,21 +29,6 @@ export class Footer {
     }
 
     return Footer.instance;
-  }
-
-  getLogo() {
-    const logo = document.createElement('a');
-    logo.className = `${footerClassList.logoLink}`;
-    logo.href = `${footerLinks.logoLinkHref}`;
-
-    const imgLogo = new Image();
-    imgLogo.className = `${footerClassList.logo}`;
-    imgLogo.src = logoImg;
-    imgLogo.alt = `${logoAlt}`;
-
-    logo.append(imgLogo);
-
-    return logo;
   }
 
   getCompanyContacts() {
@@ -149,7 +134,7 @@ export class Footer {
       return;
     }
 
-    const logo = this.getLogo();
+    const logo = new Logo('footer').create();
     const contacts = this.getCompanyContacts();
     const developerList = this.getDeveloperList();
     const copyright = this.getCopyright();
