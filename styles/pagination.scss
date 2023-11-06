@@ -28,15 +28,9 @@
     column-gap: 8px;
   }
 
-  &__left {
-  }
-
-  &__current {
-  }
-
-  &__tottal {
-  }
-
-  &__right {
+  &__info {
+    display: flex;
+    align-items: center;
+    column-gap: 4px;
   }
 }
