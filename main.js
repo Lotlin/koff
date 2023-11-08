@@ -12,6 +12,7 @@ import {Catalog} from './modules/Catalog/Catalog';
 import {NotFound} from './modules/NotFound/NotFound';
 import {FavoriteService} from './sevices/StorageService';
 import {Pagination} from './features/Pagination/Pagination';
+import {BreadCrumbs} from './features/BreadCrumbs/BreadCrumbs';
 
 const producrSlider = () => {
   Promise.all([
@@ -40,45 +41,47 @@ const producrSlider = () => {
   });
 };
 
+export const router = new Navigo('/', {linksSelector: 'a[href^="/"]'});
+
 const init = () => {
   const api = new ApiService();
-  const router = new Navigo('/', {linksSelector: 'a[href^="/"]'});
 
   new Header().mount();
   new Main().mount();
   new Footer().mount();
 
-  api.getProductCategories().then(data => {
-    new Catalog().mount(new Main().element, data);
-    router.updatePageLinks();
-  });
-
   producrSlider();
 
   router
-      .on('/', async () => {
-        const products = await api.getProducts();
-        new ProductList().mount(new Main().element, products);
-        router.updatePageLinks();
-      },
-      {
-        leave(done) {
-          new ProductList().unmount();
-          done();
-        },
-        already(match) {
-          match.route.handler(match);
-        },
-      },
+      .on(
+          '/',
+          async () => {
+            new Catalog().mount(new Main().element);
+            const products = await api.getProducts();
+            new ProductList().mount(new Main().element, products);
+            router.updatePageLinks();
+          },
+          {
+            leave(done) {
+              new ProductList().unmount();
+              new Catalog().unmount();
+              done();
+            },
+            already(match) {
+              match.route.handler(match);
+            },
+          },
       )
       .on(
           '/category',
-          async ({params: {slug, page}}) => {
+          async ({params: {slug, page = 1}}) => {
+            new Catalog().mount(new Main().element);
             const {data: products, pagination} = await api.getProducts({
               category: slug,
-              page: page || 1,
+              page,
             });
 
+            new BreadCrumbs().mount(new Main().element, [{text: slug}]);
             new ProductList().mount(new Main().element, products, slug);
             new Pagination()
                 .mount(new ProductList().containerElement)
@@ -88,60 +91,84 @@ const init = () => {
           },
           {
             leave(done) {
+              new Catalog().unmount();
               new ProductList().unmount();
+              new BreadCrumbs().unmount();
               done();
             },
           },
       )
-      .on('/favorite', async () => {
-        const favorite = new FavoriteService().get();
-        const {data: product} =
-            await api.getProducts({list: favorite.join(',')});
-        new ProductList().mount(new Main().element, product, 'Избранное',
-            'В избранном пока ничего нет');
-        router.updatePageLinks();
-      },
-      {
-        leave(done) {
-          new ProductList().unmount();
-          done();
-        },
-        already(match) {
-          match.route.handler(match);
-        },
-      },
+      .on(
+          '/favorite',
+          async ({params}) => {
+            new Catalog().mount(new Main().element);
+            const favorite = new FavoriteService().get();
+            const {data: product, pagination} = await api.getProducts({
+              list: favorite.join(','),
+              page: params?.page || 1,
+            });
+            new BreadCrumbs().mount(new Main().element, [{text: 'Избранное'}]);
+            new ProductList().mount(new Main().element, product, 'Избранное',
+                'В избранном пока ничего нет');
+            new Pagination()
+                .mount(new ProductList().containerElement).update(pagination);
+            router.updatePageLinks();
+          },
+          {
+            leave(done) {
+              new BreadCrumbs().unmount();
+              new Catalog().unmount();
+              new ProductList().unmount();
+              done();
+            },
+            already(match) {
+              match.route.handler(match);
+            },
+          },
       )
-      .on('/search', () => {
-        console.log('search');
-      })
-      .on('/product/:id', (obj) => {
-        console.log('obj: ', obj);
-      })
-      .on('/cart', () => {
-        console.log('cart');
-      })
-      .on('/order', () => {
-        new OrderInfo().mount(new Main().element);
-      },
-      {
-        leave(done) {
-          new OrderInfo().unmount();
-          done();
-        },
-      },
+      .on(
+          '/search',
+          () => {
+            console.log('search');
+          },
       )
-      .notFound(() => {
-        new NotFound().mount(new Main().element);
-        setTimeout(() => {
-          router.navigate('/');
-        }, 5000);
-      },
-      {
-        leave(done) {
-          new Main().element.innerHTML = '';
-          done();
-        },
-      },
+      .on(
+          '/product/:id',
+          (obj) => {
+            console.log('obj: ', obj);
+          },
+      )
+      .on(
+          '/cart',
+          () => {
+            console.log('cart');
+          },
+      )
+      .on(
+          '/order',
+          () => {
+            new OrderInfo().mount(new Main().element);
+          },
+          {
+            leave(done) {
+              new OrderInfo().unmount();
+              done();
+            },
+          },
+      )
+      .notFound(
+          () => {
+            new NotFound().mount(new Main().element);
+            setTimeout(() => {
+              router.navigate('/');
+            }, 5000);
+          },
+          {
+            leave(done) {
+              new Main().element.innerHTML = '';
+              done();
+            },
+          },
       );
 
   router.resolve();

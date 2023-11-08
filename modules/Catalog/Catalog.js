@@ -1,4 +1,5 @@
 /* eslint-disable require-jsdoc */
+import {ApiService} from '../../sevices/ApiService';
 import {addContainer} from '../addContainer';
 import {catalogClassList} from '../data/catalogData';
 
@@ -17,6 +18,10 @@ export class Catalog {
     }
 
     return Catalog.instance;
+  }
+
+  async getData() {
+    this.catalogData = await new ApiService().getProductCategories();
   }
 
   renderListElem(data) {
@@ -40,15 +45,17 @@ export class Catalog {
     this.containerElement.append(listElem);
   }
 
-  mount(parent, data) {
+  async mount(parent) {
     if (this.isMounted) {
       return;
     }
 
-    this.renderListElem(data);
+    if (!this.catalogData) {
+      await this.getData();
+      this.renderListElem(this.catalogData);
+    }
 
     parent.append(this.element);
-
     this.isMounted = true;
   }
 
